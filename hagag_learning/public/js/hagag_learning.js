@@ -1,4 +1,4 @@
-(()=>{"use strict";const B="حجاج",T=/\b(frappe|erpnext)\b/i,G=/\b(frappe|erpnext)\b/gi,SKIP=new Set(["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE"]),ATTRS=["title","placeholder","alt","aria-label"];
+(()=>{"use strict";const B="Hagag",T=/\b(frappe|erpnext)\b/i,G=/\b(frappe|erpnext)\b/gi,SKIP=new Set(["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE"]),ATTRS=["title","placeholder","alt","aria-label"];
 const fix=s=>s.replace(G,B);
 const run=()=>{
 if(T.test(document.title))document.title=fix(document.title);
