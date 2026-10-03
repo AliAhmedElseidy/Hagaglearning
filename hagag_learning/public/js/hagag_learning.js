@@ -57,3 +57,17 @@ btn=document.createElement("button");btn.textContent="إدارة الكورس";
 btn.style.cssText="position:fixed;bottom:18px;left:18px;z-index:9999;padding:12px 18px;border:0;border-radius:12px;background:linear-gradient(135deg,#f5a623,#f76b1c);color:#fff;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.3);cursor:pointer";
 btn.onclick=open;document.body.appendChild(btn)}catch(e){}};
 setInterval(tick,1000)})();
+
+(()=>{"use strict";
+const show=(t,ok)=>{const d=document.createElement("div");d.dir="rtl";d.textContent=t;d.style.cssText="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100000;max-width:92vw;padding:14px 22px;border-radius:14px;font-weight:600;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);background:"+(ok?"#16a34a":"#dc2626");document.body.appendChild(d);setTimeout(()=>d.remove(),10000)};
+const O=XMLHttpRequest.prototype.open;
+XMLHttpRequest.prototype.open=function(m,u){
+if(String(u).indexOf("lms.lms.user.sign_up")>-1){
+this.addEventListener("load",()=>{try{
+if(this.status!==200)return show("حصل خطأ، حاول مرة أخرى",false);
+const r=JSON.parse(this.responseText).message;
+const ok=parseInt(r[0],10)!==0;
+show(ok?"تم إرسال رابط التفعيل إلى بريدك الإلكتروني، افتحه لإكمال التسجيل ✉️":String(r[1]||"حصل خطأ"),ok)
+}catch(e){}})}
+return O.apply(this,arguments)};
+})();
