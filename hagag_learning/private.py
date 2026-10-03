@@ -131,3 +131,53 @@ def ensure_field():
             ]
         }
     )
+
+
+def _need_manage(course):
+    if not _manages(course, frappe.session.user):
+        frappe.throw(_("غير مسموح"), frappe.PermissionError)
+
+
+@frappe.whitelist()
+def get_settings(course):
+    _need_manage(course)
+    row = frappe.db.get_value("LMS Course", course, ["published", "is_private"], as_dict=True)
+    return {
+        "published": int(row.published or 0),
+        "is_private": int(row.is_private or 0),
+        "can_publish": _is_priv(frappe.session.user),
+    }
+
+
+@frappe.whitelist()
+def get_students(course):
+    _need_manage(course)
+    rows = frappe.get_all(
+        "LMS Enrollment", filters={"course": course}, fields=["member"], order_by="creation desc"
+    )
+    for r in rows:
+        r["full_name"] = frappe.db.get_value("User", r["member"], "full_name")
+    return rows
+
+
+@frappe.whitelist()
+def remove_student(course, email):
+    _need_manage(course)
+    for n in frappe.get_all("LMS Enrollment", filters={"course": course, "member": email}, pluck="name"):
+        frappe.delete_doc("LMS Enrollment", n, ignore_permissions=True)
+    return "ok"
+
+
+@frappe.whitelist()
+def set_visibility(course, is_private):
+    _need_manage(course)
+    frappe.db.set_value("LMS Course", course, "is_private", 1 if int(is_private) else 0)
+    return "ok"
+
+
+@frappe.whitelist()
+def set_published(course, published):
+    if not _is_priv(frappe.session.user):
+        frappe.throw(_("النشر للإدارة فقط"), frappe.PermissionError)
+    frappe.db.set_value("LMS Course", course, "published", 1 if int(published) else 0)
+    return "ok"
