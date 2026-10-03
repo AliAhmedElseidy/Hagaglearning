@@ -267,3 +267,13 @@ after_request = ["hagag_learning.brand.inject"]
 
 app_include_css = "/assets/hagag_learning/css/hagag_learning.css"
 app_include_js = "/assets/hagag_learning/js/hagag_learning.js"
+
+override_whitelisted_methods = {
+    "lms.lms.utils.get_courses": "hagag_learning.private.get_courses",
+    "lms.lms.utils.get_course_details": "hagag_learning.private.get_course_details",
+    "lms.lms.utils.get_course_outline": "hagag_learning.private.get_course_outline",
+    "lms.lms.utils.get_lesson": "hagag_learning.private.get_lesson",
+    "lms.lms.utils.enroll_in_course": "hagag_learning.private.enroll_in_course",
+}
+permission_query_conditions = {"LMS Course": "hagag_learning.private.course_query"}
+after_migrate = ["hagag_learning.private.ensure_field"]
