@@ -4,7 +4,7 @@ import re
 
 import frappe
 
-NAME = "Hagag Learning"
+NAME = "Hagagco"
 BASE = os.path.join(os.path.dirname(__file__), "public")
 CACHE = {}
 
