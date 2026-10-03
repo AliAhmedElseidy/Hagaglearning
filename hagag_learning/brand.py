@@ -29,7 +29,8 @@ def rewrite(html):
     manifest = "/assets/hagag_learning/manifest/manifest.webmanifest?v=" + ver("manifest/manifest.webmanifest")
     html = html.replace("/api/method/lms.lms.api.get_pwa_manifest", manifest)
     css = '<link rel="stylesheet" href="/assets/hagag_learning/css/hagag_learning.css?v=' + ver("css/hagag_learning.css") + '">'
-    return html.replace("</head>", css + "</head>", 1)
+    js = '<script src="/assets/hagag_learning/js/hagag_learning.js?v=' + ver("js/hagag_learning.js") + '" defer></script>'
+    return html.replace("</head>", css + js + "</head>", 1)
 
 
 def inject(response, request):
