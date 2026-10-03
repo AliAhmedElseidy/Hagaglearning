@@ -264,3 +264,6 @@ app_license = "mit"
 
 
 after_request = ["hagag_learning.brand.inject"]
+
+app_include_css = "/assets/hagag_learning/css/hagag_learning.css"
+app_include_js = "/assets/hagag_learning/js/hagag_learning.js"
